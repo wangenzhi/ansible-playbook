@@ -22,10 +22,10 @@ $ mv roles /etc/ansible/
 
 ## 安装指南
 
-| [系统初始化](https://github.com/wangenzhi/ansible-playbook/blob/master/docs/setup/00-initsys.md) | [Nginx](https://github.com/wangenzhi/ansible-playbook/blob/master/docs/setup/01-install_nginx.md) | [JDK](https://github.com/wangenzhi/ansible-playbook/blob/master/docs/setup/02-install_jdk.md) |      |      |      |      |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ---- | ---- | ---- | ---- |
-|                                                              |                                                              |                                                              |      |      |      |      |
-|                                                              |                                                              |                                                              |      |      |      |      |
+| [系统初始化](https://github.com/wangenzhi/ansible-playbook/blob/master/docs/setup/00-initsys.md) | [Nginx](https://github.com/wangenzhi/ansible-playbook/blob/master/docs/setup/01-install_nginx.md) | [JDK](https://github.com/wangenzhi/ansible-playbook/blob/master/docs/setup/02-install_jdk.md) | [Tomcat](https://github.com/wangenzhi/ansible-playbook/blob/master/docs/setup/03-install_tomcat.md) |      |      |      |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ---- | ---- | ---- |
+|                                                              |                                                              |                                                              |                                                              |      |      |      |
+|                                                              |                                                              |                                                              |                                                              |      |      |      |
 
 
 
