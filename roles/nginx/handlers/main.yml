@@ -1,0 +1,2 @@
+- name: restart nginx
+  shell: {{ NGINX_DIR }}/sbin/nginx -s reload

@@ -1,0 +1,30 @@
+---
+## 本 Tasks 用来安装 JDK
+- name: 检查 JDK 是否已经安装
+  stat: path={{ JAVA_HOME }}
+  register: jdk_result
+
+- name: 检查存放安装包目录是否存在
+  stat: path={{ SOFTWARE_DIR }}
+  register: dir_result
+
+- name: Create Dir
+  shell: mkdir {{ SOFTWARE_DIR }}
+  when: dir_result.stat.exists == false
+
+- name: 复制安装包
+  unarchive: src=jdk-{{ PKG_VERSION }}-linux-x64.tar.gz dest={{ SOFTWARE_DIR }}
+  when: jdk_result.stat.exists == false
+
+- name: 创建JDK目录软链接
+  file: src={{ SOFTWARE_DIR }}/jdk{{ JDK_VERSION }} dest={{ JAVA_HOME }} state=link
+
+- name: 配置伪随机函数生成器
+  lineinfile:
+    dest: "{{ JAVA_HOME }}/jre/lib/security/java.security"
+    regexp: '^securerandom.source'
+    line: 'securerandom.source=file:/dev/urandom'
+
+- name: 复制JDK环境变量
+  template: src=jdk.sh.j2 dest=/etc/profile.d/jdk.sh
+

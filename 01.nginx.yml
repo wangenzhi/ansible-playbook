@@ -1,0 +1,4 @@
+- hosts: news 
+  remote_user: root
+  roles:
+  - nginx

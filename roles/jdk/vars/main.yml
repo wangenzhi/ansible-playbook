@@ -1,0 +1,4 @@
+PKG_VERSION: 8u251
+JDK_VERSION: 1.8.0_251
+JAVA_HOME: /usr/local/jdk
+

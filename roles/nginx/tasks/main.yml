@@ -1,0 +1,31 @@
+- name: 检查存放安装包目录是否存在
+  stat: path={{ SOFTWARE_DIR }}
+  register: dir_result
+
+- name: Create Dir
+  shell: mkdir {{ SOFTWARE_DIR }}
+  when: dir_result.stat.exists == false
+
+- name: Copy Nginx Package
+  unarchive: src=nginx.tar.gz dest={{ SOFTWARE_DIR }} mode=755
+
+- name: Install Nginx Depend on the package
+  shell: cd {{ SOFTWARE_DIR }}/nginx/nginx-rpm/ && rpm -ivh *.rpm --force --nodeps
+
+- name: Install Nginx
+  shell: useradd -r nginx && cd {{ SOFTWARE_DIR }}/nginx/nginx-1.18.0/ && ./configure --prefix={{ NGINX_DIR }} --user=nginx --group=nginx --with-compat --with-file-aio --with-threads --with-http_addition_module --with-http_auth_request_module --with-http_dav_module --with-http_flv_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_mp4_module --with-http_random_index_module --with-http_realip_module --with-http_secure_link_module --with-http_slice_module --with-http_ssl_module --with-http_stub_status_module --with-http_sub_module --with-http_v2_module --with-mail --with-mail_ssl_module --with-stream --with-stream_realip_module --with-stream_ssl_module --with-stream_ssl_preread_module --with-cc-opt='-O2 -g -pipe -Wall -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches -m64 -mtune=generic' && make -j `grep processor /proc/cpuinfo | wc -l` && make install 
+
+- name: Copy Nginx Config
+  template: src=nginx.conf.j2 dest={{ NGINX_DIR }}/conf/nginx.conf backup=yes
+  tags:
+  - instconf
+  notify: restart nginx
+
+- name: Create conf.d
+  shell: mkdir {{ NGINX_DIR }}/conf/conf.d
+
+- name: Copy Nginx env
+  template: src=nginx.sh.j2 dest=/etc/profile.d/nginx.sh
+
+- name: Start Nginx
+  shell: cd {{ NGINX_DIR }}/sbin/ && ./nginx && echo '{{ NGINX_DIR }}/sbin/nginx' >> /etc/rc.d/rc.local

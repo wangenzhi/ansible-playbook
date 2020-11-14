@@ -1,0 +1,5 @@
+---
+# Nginx Version
+NGINX_VERSION: 1.18.0
+NGINX_DIR: /usr/local/nginx
+

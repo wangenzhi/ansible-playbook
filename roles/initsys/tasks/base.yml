@@ -1,0 +1,19 @@
+---
+## 本Tasks用来初始化Centos7系统
+- name: 安装基础工具包
+  unarchive: src=base-rpm.tar.gz dest={{ SOFTWARE_DIR }}/
+
+- name: 安装基础工具包
+  shell: cd {{ SOFTWARE_DIR }}/base-rpm/ && rpm -ivh *.rpm --force --nodeps
+
+- name: 配置字符集支持为en_US.UTF-8 
+  template: src=locale.conf.j2 dest=/etc/locale.conf backup=yes
+
+- name: 配置登录提示脚本 
+  template: src=login.sh.j2 dest=/etc/profile.d/login.sh
+
+- name: 修改rc.local文件属性
+  file: path=/etc/rc.d/rc.local mode=0755 
+
+- name: 时间-设置时区为上海
+  file: src=/usr/share/zoneinfo/Asia/Shanghai dest=/etc/localtime state=link force=yes
