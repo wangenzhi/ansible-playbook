@@ -1,0 +1,28 @@
+---
+## 本 Tasks 用来安装 Tomcat
+- name: 检查 Tomcat 是否已经安装
+  stat: path={{ TOMCAT_HOME }}
+  register: tomcat_result
+
+- name: 检查存放安装包目录是否存在
+  stat: path={{ SOFTWARE_DIR }}
+  register: dir_result
+
+- name: Create Dir
+  shell: mkdir {{ SOFTWARE_DIR }}
+  when: dir_result.stat.exists == false
+
+- name: 复制安装包
+  unarchive: src=apache-tomcat-{{ PKG_VERSION }}.tar.gz dest={{ SOFTWARE_DIR }}
+  when: tomcat_result.stat.exists == false
+
+- name: 创建 Tomcat 目录软链接
+  file: src={{ SOFTWARE_DIR }}/apache-tomcat-{{ PKG_VERSION }} dest={{ TOMCAT_HOME }} state=link
+
+- name: 复制 tomcat.service 启动文件
+  template: src=tomcat.service.j2 dest=/etc/systemd/system/tomcat.service
+
+- name: start tomcat
+  systemd: enabled=yes name=tomcat state=started
+
+

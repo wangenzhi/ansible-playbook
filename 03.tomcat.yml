@@ -1,0 +1,5 @@
+- hosts: news
+  remote_user: root
+  roles:
+  - jdk # 如果已经安装好了 jdk 这就不需要再重复安装了
+  - tomcat 

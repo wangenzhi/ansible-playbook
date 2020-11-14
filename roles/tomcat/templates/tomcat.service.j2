@@ -1,0 +1,16 @@
+[Unit]
+Description=tomcat server
+Wants=network-online.target
+After=network.target
+
+[Service]
+Type=forking
+Environment="JAVA_HOME=/usr/local/jdk"
+Environment="PATH=$JAVA_HOME/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin:/bin:/sbin"
+Environment="CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar"
+ExecStart=/bin/bash {{ TOMCAT_HOME }}/bin/catalina.sh start
+ExecStop=/bin/bash {{ TOMCAT_HOME }}/bin/catalina.sh stop
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
